@@ -57,7 +57,7 @@ export class WorkspaceComponent implements OnChanges {
     this.canvas.add(contact);
 
     // Set event listener for contact interaction (click to toggle state)
-    contact.on('mousedown', () => this.toggleContactState(contact));
+    contact.on('mouse:down' as keyof fabric.ObjectEvents, () => this.toggleContactState(contact));
   }
 
   // Add a coil to the canvas
@@ -83,7 +83,7 @@ export class WorkspaceComponent implements OnChanges {
     this.canvas.add(coil);
 
     // Set event listener for coil interaction (click to toggle state)
-    coil.on('mousedown', () => this.toggleCoilState(coil));
+    coil.on('mouse:down' as keyof fabric.ObjectEvents, () => this.toggleCoilState(coil));
   }
 
   // Toggle contact state
