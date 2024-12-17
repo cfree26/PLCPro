@@ -1,13 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>PLCPro</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio 5000-like Interface</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Main Container -->
+    <div class="studio-container">
+      <!-- Left Navigation Panel -->
+      <div class="left-panel">
+        <div class="panel-item">Project</div>
+        <div class="panel-item">Monitor</div>
+        <div class="panel-item">Controller</div>
+        <div class="panel-item">Routines</div>
+        <div class="panel-item">Data</div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <!-- Top Toolbar -->
+        <div class="toolbar">
+          <button class="toolbar-button">File</button>
+          <button class="toolbar-button">Edit</button>
+          <button class="toolbar-button">View</button>
+          <button class="toolbar-button">Run</button>
+          <button class="toolbar-button">Connect</button>
+        </div>
+
+        <!-- Editor/Workspace -->
+        <div class="workspace">
+          <textarea
+            class="workspace-textarea"
+            placeholder="Start programming..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <span>Status: Connected</span>
+          <span class="status-bar-right">Line 1, Column 1</span>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
