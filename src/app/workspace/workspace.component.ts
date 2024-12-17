@@ -1,8 +1,6 @@
 import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import * as fabric from 'fabric';
 
-
-
 @Component({
   selector: 'app-workspace',
   templateUrl: './workspace.component.html',
@@ -28,9 +26,6 @@ export class WorkspaceComponent implements OnChanges {
   // Initialize the fabric.js canvas
   initializeCanvas(): void {
     this.canvas = new fabric.Canvas(this.ladderCanvas.nativeElement);
-    
-    // Draw the initial ladder logic elements (example with one rung)
-    this.drawLadderRung(50, 50);
   }
 
   // This method is called when the input property changes
@@ -39,30 +34,41 @@ export class WorkspaceComponent implements OnChanges {
     this.message = this.isConnected ? 'You are connected. Start programming!' : 'Please connect to the controller to begin.';
   }
 
-  // Method to draw a simple ladder rung
-  drawLadderRung(x: number, y: number): void {
-    const rungLine = new fabric.Line([x, y, x + 200, y], {
-      left: x,
-      top: y,
-      stroke: 'black',
-      strokeWidth: 2
-    });
+  // Add a contact (NO or NC)
+  addContact(type: string): void {
+    const x = 50; // X position of the contact
+    const y = 50 + this.rungElements.length * 100; // Y position based on the number of elements
 
     const contact = new fabric.Rect({
-      left: x + 50,
-      top: y - 25,
-      fill: 'blue',
+      left: x,
+      top: y,
+      fill: type === 'NO' ? 'blue' : 'red', // NO = blue, NC = red
       width: 30,
       height: 30,
       hasBorders: true,
       hasControls: false,
       selectable: true
     });
+
+    // Store the element in the rungElements array
+    this.rungElements.push({ type: 'contact', object: contact, state: false, contactType: type });
+
+    // Add contact to the canvas
+    this.canvas.add(contact);
+
+    // Set event listener for contact interaction (click to toggle state)
+    contact.on('mousedown', () => this.toggleContactState(contact));
+  }
+
+  // Add a coil to the canvas
+  addCoil(): void {
+    const x = 200; // X position of the coil
+    const y = 50 + this.rungElements.length * 100; // Y position based on the number of elements
 
     const coil = new fabric.Rect({
-      left: x + 150,
-      top: y - 25,
-      fill: 'red',
+      left: x,
+      top: y,
+      fill: 'red', // Default coil color
       width: 30,
       height: 30,
       hasBorders: true,
@@ -70,29 +76,24 @@ export class WorkspaceComponent implements OnChanges {
       selectable: true
     });
 
-    // Add elements to the canvas
-    this.canvas.add(rungLine);
-    this.canvas.add(contact);
-    this.canvas.add(coil);
-
-    // Store the elements in rungElements array
-    this.rungElements.push({ type: 'contact', object: contact, state: false });
+    // Store the element in the rungElements array
     this.rungElements.push({ type: 'coil', object: coil, state: false });
 
-    // Set event listeners for interactions (click to toggle state)
-    contact.on('mousedown', () => this.toggleContactState(contact));
+    // Add coil to the canvas
+    this.canvas.add(coil);
+
+    // Set event listener for coil interaction (click to toggle state)
     coil.on('mousedown', () => this.toggleCoilState(coil));
   }
 
   // Toggle contact state
   toggleContactState(contact: any): void {
-    // Toggle contact state and change color to indicate state
     const currentState = this.rungElements.find(e => e.object === contact).state;
     const newState = !currentState;
     this.rungElements.find(e => e.object === contact).state = newState;
 
-    // Change the color based on state
-    contact.set({ fill: newState ? 'green' : 'blue' });
+    // Change the color based on state (blue for false, green for true)
+    contact.set({ fill: newState ? 'green' : contact.contactType === 'NO' ? 'blue' : 'red' });
     this.canvas.renderAll();
 
     // Re-evaluate rung logic
@@ -101,12 +102,11 @@ export class WorkspaceComponent implements OnChanges {
 
   // Toggle coil state (based on contact state)
   toggleCoilState(coil: any): void {
-    // In this simple example, we can toggle the coil manually too
     const currentState = this.rungElements.find(e => e.object === coil).state;
     const newState = !currentState;
     this.rungElements.find(e => e.object === coil).state = newState;
 
-    // Change the color based on state
+    // Change the color based on state (red for inactive, yellow for active)
     coil.set({ fill: newState ? 'yellow' : 'red' });
     this.canvas.renderAll();
   }
