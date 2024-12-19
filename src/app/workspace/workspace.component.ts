@@ -7,15 +7,15 @@ import * as fabric from 'fabric';
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.css'],
   standalone: true,
-  imports: [CommonModule]  // Ensure CommonModule is imported
+  imports: [CommonModule]  // Ensure CommonModule is imported for ngFor, ngIf, etc.
 })
 export class WorkspaceComponent implements OnChanges {
 
   @Input() isConnected: boolean = false;  // Input to accept the connection status
   message: string = 'Please connect to the controller to begin.';  // Default message
 
-  rungs: any[] = []; // Data structure to hold the rungs and their components
-  currentRungId: number = 0; // To keep track of which rung is being worked on
+  rungs: any[] = [];  // Data structure to hold the rungs and their components
+  currentRungId: number = 0;  // To keep track of which rung is being worked on
 
   @ViewChild('ladderCanvas', { static: true }) ladderCanvas!: ElementRef<HTMLCanvasElement>;
   canvas: any;
@@ -26,27 +26,28 @@ export class WorkspaceComponent implements OnChanges {
     this.initializeCanvas();
   }
 
-  initializeCanvas(): void {
-    this.canvas = new fabric.Canvas(this.ladderCanvas.nativeElement);
-  }
-
   ngOnChanges() {
     this.message = this.isConnected ? 'You are connected. Start programming!' : 'Please connect to the controller to begin.';
+  }
+
+  // Initialize the fabric.js canvas
+  initializeCanvas(): void {
+    this.canvas = new fabric.Canvas(this.ladderCanvas.nativeElement);
   }
 
   // Create a new rung
   addRung(): void {
     const newRung = { id: this.currentRungId++, components: [] };
     this.rungs.push(newRung);
-    this.renderRungs(); // Re-render the rungs to the canvas
+    this.renderRungs();  // Re-render the rungs to the canvas
   }
 
   renderRungs(): void {
     this.canvas.clear();  // Clear the canvas before rendering
-    let yPosition = 50; // Starting Y position for rendering rungs
+    let yPosition = 50;  // Starting Y position for rendering rungs
     this.rungs.forEach(rung => {
       this.renderRung(rung, yPosition);
-      yPosition += 150; // Increment Y position for next rung
+      yPosition += 150;  // Increment Y position for next rung
     });
   }
 
@@ -74,8 +75,8 @@ export class WorkspaceComponent implements OnChanges {
           selectable: true
         });
 
+        // Bind mouse event with proper event type
         contact.on('mousedown', () => this.toggleContactState(rung.id, rung.components.indexOf(component)));
-;
         this.canvas.add(contact);
         xPosition += 50;
       } else if (component.type === 'coil') {
@@ -101,7 +102,7 @@ export class WorkspaceComponent implements OnChanges {
     if (rung) {
       const contact = { type: type, state: false };
       rung.components.push(contact);
-      this.renderRungs(); // Re-render the rungs to the canvas
+      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
@@ -110,7 +111,7 @@ export class WorkspaceComponent implements OnChanges {
     if (rung) {
       const coil = { state: false };
       rung.components.push(coil);
-      this.renderRungs(); // Re-render the rungs to the canvas
+      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
@@ -118,9 +119,9 @@ export class WorkspaceComponent implements OnChanges {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const contact = rung.components[contactIndex];
-      contact.state = !contact.state;
-      this.evaluateRung(rungId); // Re-evaluate the rung after toggling
-      this.renderRungs(); // Re-render the rungs to the canvas
+      contact.state = !contact.state;  // Toggle the contact state
+      this.evaluateRung(rungId);  // Re-evaluate the rung after toggling
+      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
@@ -128,8 +129,8 @@ export class WorkspaceComponent implements OnChanges {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const coil = rung.components[coilIndex];
-      coil.state = !coil.state;
-      this.renderRungs(); // Re-render the rungs to the canvas
+      coil.state = !coil.state;  // Toggle the coil state
+      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 

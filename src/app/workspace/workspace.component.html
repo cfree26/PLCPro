@@ -2,7 +2,9 @@
   <!-- Controls for adding ladder components -->
   <div class="ladder-controls">
     <button (click)="addRung()">Add Rung</button>
+
     <div *ngFor="let rung of rungs; let i = index">
+      <!-- Buttons for adding components to each rung -->
       <button (click)="addContactToRung(rung.id, 'NO')">
         Add NO Contact to Rung {{ i + 1 }}
       </button>
@@ -15,19 +17,24 @@
     </div>
   </div>
 
-  <!-- Display rungs and components -->
+  <!-- Display rungs and their components -->
   <div *ngFor="let rung of rungs; let i = index" class="rung">
     <div class="rung-header">
       <h3>Rung {{ i + 1 }}</h3>
     </div>
+
     <div class="rung-contents">
+      <!-- Display components (Contacts and Coils) inside the rung -->
       <div *ngFor="let component of rung.components; let j = index">
+        <!-- Display Contacts (NO or NC) -->
         <div *ngIf="component.type === 'contact'" class="contact">
           <span (click)="toggleContactState(rung.id, j)">
             {{ component.type }} Contact -
             {{ component.state ? "Active" : "Inactive" }}
           </span>
         </div>
+
+        <!-- Display Coils -->
         <div *ngIf="component.type === 'coil'" class="coil">
           <span (click)="toggleCoilState(rung.id, j)">
             Coil - {{ component.state ? "Active" : "Inactive" }}

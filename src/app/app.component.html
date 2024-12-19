@@ -19,9 +19,9 @@
       <button class="toolbar-button" (click)="runProject()">Run</button>
     </div>
 
-    <!-- Workspace (Main component) -->
+    <!-- Workspace Component -->
     <app-workspace [isConnected]="isConnected"></app-workspace>
-    <!-- This is where the workspace is rendered -->
+    <!-- Make sure this line is in your template -->
 
     <!-- Status Bar -->
     <div class="status-bar">
@@ -31,7 +31,7 @@
   </div>
 </div>
 
-<!-- Optional Placeholder for content and social links (can be removed if not needed) -->
+<!-- Placeholder for content and social links (can be removed if not needed) -->
 <main class="main">
   <div class="content">
     <div class="left-side">
@@ -76,3 +76,4 @@
 
 <!-- Angular Router Outlet -->
 <router-outlet></router-outlet>
+<!-- If you need routing, this should be here -->
