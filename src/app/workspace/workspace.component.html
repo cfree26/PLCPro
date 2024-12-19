@@ -1,13 +1,41 @@
 <div class="workspace">
   <!-- Controls for adding ladder components -->
   <div class="ladder-controls">
-    <button (click)="addContact('NO')">Add NO Contact</button>
-    <button (click)="addContact('NC')">Add NC Contact</button>
-    <button (click)="addCoil()">Add Coil</button>
+    <button (click)="addRung()">Add Rung</button>
+    <div *ngFor="let rung of rungs; let i = index">
+      <button (click)="addContactToRung(rung.id, 'NO')">
+        Add NO Contact to Rung {{ i + 1 }}
+      </button>
+      <button (click)="addContactToRung(rung.id, 'NC')">
+        Add NC Contact to Rung {{ i + 1 }}
+      </button>
+      <button (click)="addCoilToRung(rung.id)">
+        Add Coil to Rung {{ i + 1 }}
+      </button>
+    </div>
   </div>
 
-  <!-- Canvas for drawing ladder logic -->
-  <canvas #ladderCanvas width="800" height="600"></canvas>
+  <!-- Display rungs and components -->
+  <div *ngFor="let rung of rungs; let i = index" class="rung">
+    <div class="rung-header">
+      <h3>Rung {{ i + 1 }}</h3>
+    </div>
+    <div class="rung-contents">
+      <div *ngFor="let component of rung.components; let j = index">
+        <div *ngIf="component.type === 'contact'" class="contact">
+          <span (click)="toggleContactState(rung.id, j)">
+            {{ component.type }} Contact -
+            {{ component.state ? "Active" : "Inactive" }}
+          </span>
+        </div>
+        <div *ngIf="component.type === 'coil'" class="coil">
+          <span (click)="toggleCoilState(rung.id, j)">
+            Coil - {{ component.state ? "Active" : "Inactive" }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Status message for connection -->
   <div class="status-message">
