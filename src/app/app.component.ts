@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConnectionService } from './connection.service'; // Import the service
 import { Subscription } from 'rxjs';
+import { WorkspaceComponent } from './workspace/workspace.component';  // Import the WorkspaceComponent
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, WorkspaceComponent],  // Add WorkspaceComponent here for direct use
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'PLCPro';
-  isConnected: boolean = false; // Keep track of connection state
+  isConnected: boolean = false;  // Track connection state
   private connectionSubscription: Subscription;
 
   constructor(private connectionService: ConnectionService) {

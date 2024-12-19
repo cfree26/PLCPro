@@ -44,6 +44,64 @@ export class WorkspaceComponent implements OnChanges {
     };
 
     this.rungs.push(newRung);  // Add the new rung to the array
+    this.renderRungs(); // Re-render the rungs to the canvas
+  }
+
+  // Render all rungs to the canvas
+  renderRungs(): void {
+    this.canvas.clear();
+    let yPosition = 50; // Starting Y position for rendering rungs
+    this.rungs.forEach(rung => {
+      this.renderRung(rung, yPosition);
+      yPosition += 150; // Increment Y position for next rung
+    });
+  }
+
+  // Render a single rung
+  renderRung(rung: any, yPosition: number): void {
+    const rungLine = new fabric.Line([50, yPosition, 500, yPosition], {
+      left: 50,
+      top: yPosition,
+      stroke: 'black',
+      strokeWidth: 2
+    });
+
+    this.canvas.add(rungLine);
+
+    // Render components inside the rung
+    let xPosition = 100; // Starting X position for components
+    rung.components.forEach((component: any) => {
+      if (component.type === 'contact') {
+        const contact = new fabric.Rect({
+          left: xPosition,
+          top: yPosition - 25,
+          fill: component.state ? 'green' : component.contactType === 'NO' ? 'blue' : 'red',
+          width: 30,
+          height: 30,
+          hasBorders: true,
+          hasControls: false,
+          selectable: true
+        });
+
+        contact.on('mouse:down' as keyof fabric.ObjectEvents, () => this.toggleContactState(rung.id, rung.components.indexOf(component)));
+        this.canvas.add(contact);
+        xPosition += 50;
+      } else if (component.type === 'coil') {
+        const coil = new fabric.Rect({
+          left: xPosition,
+          top: yPosition - 25,
+          fill: component.state ? 'yellow' : 'red',
+          width: 30,
+          height: 30,
+          hasBorders: true,
+          hasControls: false,
+          selectable: true
+        });
+
+        coil.on('mouse:down' as keyof fabric.ObjectEvents, () => this.toggleCoilState(rung.id, rung.components.indexOf(component)));
+        this.canvas.add(coil);
+      }
+    });
   }
 
   // Add a contact (NO or NC) to a rung
@@ -52,6 +110,7 @@ export class WorkspaceComponent implements OnChanges {
     if (rung) {
       const contact = { type: type, state: false }; // Each contact has a type (NO or NC) and a state
       rung.components.push(contact);  // Add contact to the rung's components
+      this.renderRungs(); // Re-render the rungs to the canvas
     }
   }
 
@@ -61,6 +120,7 @@ export class WorkspaceComponent implements OnChanges {
     if (rung) {
       const coil = { state: false }; // Each coil has a state (true or false)
       rung.components.push(coil);  // Add coil to the rung's components
+      this.renderRungs(); // Re-render the rungs to the canvas
     }
   }
 
@@ -71,6 +131,7 @@ export class WorkspaceComponent implements OnChanges {
       const contact = rung.components[contactIndex];
       contact.state = !contact.state;  // Toggle the contact state
       this.evaluateRung(rungId);  // Re-evaluate the rung after toggling
+      this.renderRungs(); // Re-render the rungs to the canvas
     }
   }
 
@@ -80,6 +141,7 @@ export class WorkspaceComponent implements OnChanges {
     if (rung) {
       const coil = rung.components[coilIndex];
       coil.state = !coil.state;  // Toggle the coil state
+      this.renderRungs(); // Re-render the rungs to the canvas
     }
   }
 
