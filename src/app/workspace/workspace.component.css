@@ -11,16 +11,32 @@
 /* Rung container */
 .rung {
   margin: 15px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f9f9f9;
+  padding: 0;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Add pipes at the start and end of each rung */
+.rung::before, .rung::after {
+  content: "|"; /* Pipe at the start and end */
+  font-size: 20px;
+  color: black;
+}
+
+.rung-line {
+  flex-grow: 1;
+  height: 2px;
+  background-color: black;
 }
 
 /* Rung header */
 .rung-header h3 {
   margin: 0;
   font-size: 18px;
+  color: black; /* Set the text color to black */
 }
 
 /* Rung contents (contact and coil components) */
@@ -33,16 +49,18 @@
 /* General styling for contact and coil components */
 .contact, .coil {
   padding: 5px 10px;
-  background-color: #e3e3e3;
+  background-color: black;
   border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
+  color: white; /* Text color for contact and coil components */
+  font-size: 18px;
 }
 
 /* Hover effect for contact and coil components */
 .contact:hover, .coil:hover {
-  background-color: #c1c1c1;
+  background-color: #555;
 }
 
 /* Styling for active state (green for active contacts) */
@@ -55,6 +73,30 @@
 .contact.inactive, .coil.inactive {
   background-color: #ff6347;  /* Red for inactive */
   color: white;
+}
+
+/* Styling for NO contact */
+.contact.no-contact {
+  background-color: black;
+  color: white;
+  padding: 0 10px;
+  font-size: 24px; /* Adjust size for NO contact */
+}
+
+/* Styling for NC contact */
+.contact.nc-contact {
+  background-color: black;
+  color: white;
+  padding: 0 10px;
+  font-size: 24px; /* Adjust size for NC contact */
+}
+
+/* Styling for Coil */
+.coil {
+  font-size: 24px;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
 }
 
 /* Status message */

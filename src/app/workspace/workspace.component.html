@@ -23,6 +23,9 @@
       <h3>Rung {{ i + 1 }}</h3>
     </div>
 
+    <!-- Display the solid line for the rung -->
+    <div class="rung-line"></div>
+
     <div class="rung-contents">
       <!-- Display components (Contacts and Coils) inside the rung -->
       <div *ngFor="let component of rung.components; let j = index">
@@ -33,8 +36,8 @@
           [ngClass]="{ active: component.state, inactive: !component.state }"
         >
           <span (click)="toggleContactState(rung.id, j)">
-            {{ component.type }} Contact -
-            {{ component.state ? "Active" : "Inactive" }}
+            {{ component.contactType === "NO" ? "[ ]" : "[ / ]" }}
+            <!-- Display NO or NC -->
           </span>
         </div>
 
@@ -45,7 +48,8 @@
           [ngClass]="{ active: component.state, inactive: !component.state }"
         >
           <span (click)="toggleCoilState(rung.id, j)">
-            Coil - {{ component.state ? "Active" : "Inactive" }}
+            {{ "{" }} OTE {{ "}" }}
+            <!-- Display Coil -->
           </span>
         </div>
       </div>
