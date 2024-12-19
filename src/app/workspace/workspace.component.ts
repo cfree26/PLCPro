@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';  // Import CommonModule to use ngFor and ngIf
-import * as fabric from 'fabric';
 
 @Component({
   selector: 'app-workspace',
@@ -17,123 +16,56 @@ export class WorkspaceComponent implements OnChanges {
   rungs: any[] = [];  // Data structure to hold the rungs and their components
   currentRungId: number = 0;  // To keep track of which rung is being worked on
 
-  @ViewChild('ladderCanvas', { static: true }) ladderCanvas!: ElementRef<HTMLCanvasElement>;
-  canvas: any;
-
   constructor() {}
-
-  ngOnInit(): void {
-    this.initializeCanvas();
-  }
 
   ngOnChanges() {
     this.message = this.isConnected ? 'You are connected. Start programming!' : 'Please connect to the controller to begin.';
-  }
-
-  // Initialize the fabric.js canvas
-  initializeCanvas(): void {
-    this.canvas = new fabric.Canvas(this.ladderCanvas.nativeElement);
   }
 
   // Create a new rung
   addRung(): void {
     const newRung = { id: this.currentRungId++, components: [] };
     this.rungs.push(newRung);
-    this.renderRungs();  // Re-render the rungs to the canvas
   }
 
-  renderRungs(): void {
-    this.canvas.clear();  // Clear the canvas before rendering
-    let yPosition = 50;  // Starting Y position for rendering rungs
-    this.rungs.forEach(rung => {
-      this.renderRung(rung, yPosition);
-      yPosition += 150;  // Increment Y position for next rung
-    });
-  }
-
-  renderRung(rung: any, yPosition: number): void {
-    const rungLine = new fabric.Line([50, yPosition, 500, yPosition], {
-      left: 50,
-      top: yPosition,
-      stroke: 'black',
-      strokeWidth: 2
-    });
-
-    this.canvas.add(rungLine);
-
-    let xPosition = 100;  // Starting X position for components
-    rung.components.forEach((component: any) => {
-      if (component.type === 'contact') {
-        const contact = new fabric.Rect({
-          left: xPosition,
-          top: yPosition - 25,
-          fill: component.state ? 'green' : component.contactType === 'NO' ? 'blue' : 'red',
-          width: 30,
-          height: 30,
-          hasBorders: true,
-          hasControls: false,
-          selectable: true
-        });
-
-        // Bind mouse event with proper event type
-        contact.on('mousedown', () => this.toggleContactState(rung.id, rung.components.indexOf(component)));
-        this.canvas.add(contact);
-        xPosition += 50;
-      } else if (component.type === 'coil') {
-        const coil = new fabric.Rect({
-          left: xPosition,
-          top: yPosition - 25,
-          fill: component.state ? 'yellow' : 'red',
-          width: 30,
-          height: 30,
-          hasBorders: true,
-          hasControls: false,
-          selectable: true
-        });
-
-        coil.on('mousedown', () => this.toggleCoilState(rung.id, rung.components.indexOf(component)));
-        this.canvas.add(coil);
-      }
-    });
-  }
-
+  // Add a contact (NO or NC) to a rung
   addContactToRung(rungId: number, type: string): void {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const contact = { type: type, state: false };
       rung.components.push(contact);
-      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
+  // Add a coil to a rung
   addCoilToRung(rungId: number): void {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const coil = { state: false };
       rung.components.push(coil);
-      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
+  // Toggle the state of a contact (NO or NC)
   toggleContactState(rungId: number, contactIndex: number): void {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const contact = rung.components[contactIndex];
-      contact.state = !contact.state;  // Toggle the contact state
+      contact.state = !contact.state;
       this.evaluateRung(rungId);  // Re-evaluate the rung after toggling
-      this.renderRungs();  // Re-render the rungs to the canvas
     }
   }
 
+  // Toggle the state of a coil
   toggleCoilState(rungId: number, coilIndex: number): void {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {
       const coil = rung.components[coilIndex];
-      coil.state = !coil.state;  // Toggle the coil state
-      this.renderRungs();  // Re-render the rungs to the canvas
+      coil.state = !coil.state;
     }
   }
 
+  // Evaluate rung logic (based on contact states)
   evaluateRung(rungId: number): void {
     const rung = this.rungs.find(r => r.id === rungId);
     if (rung) {

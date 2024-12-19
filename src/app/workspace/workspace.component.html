@@ -27,7 +27,11 @@
       <!-- Display components (Contacts and Coils) inside the rung -->
       <div *ngFor="let component of rung.components; let j = index">
         <!-- Display Contacts (NO or NC) -->
-        <div *ngIf="component.type === 'contact'" class="contact">
+        <div
+          *ngIf="component.type === 'contact'"
+          class="contact"
+          [ngClass]="{ active: component.state, inactive: !component.state }"
+        >
           <span (click)="toggleContactState(rung.id, j)">
             {{ component.type }} Contact -
             {{ component.state ? "Active" : "Inactive" }}
@@ -35,7 +39,11 @@
         </div>
 
         <!-- Display Coils -->
-        <div *ngIf="component.type === 'coil'" class="coil">
+        <div
+          *ngIf="component.type === 'coil'"
+          class="coil"
+          [ngClass]="{ active: component.state, inactive: !component.state }"
+        >
           <span (click)="toggleCoilState(rung.id, j)">
             Coil - {{ component.state ? "Active" : "Inactive" }}
           </span>

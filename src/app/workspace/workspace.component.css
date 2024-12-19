@@ -1,44 +1,65 @@
+/* Workspace container */
 .workspace {
-    padding: 20px;
-  }
-  
-  .ladder-controls {
-    margin-bottom: 20px;
-  }
-  
-  .rung {
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-  }
-  
-  .rung-header h3 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .rung-contents {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .contact, .coil {
-    padding: 5px 10px;
-    background-color: #e3e3e3;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .contact:hover, .coil:hover {
-    background-color: #c1c1c1;
-  }
-  
-  .status-message {
-    margin-top: 20px;
-    font-size: 16px;
-    color: #333;
-  }
-  
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.ladder-controls {
+  margin-bottom: 20px;
+}
+
+/* Rung container */
+.rung {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Rung header */
+.rung-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Rung contents (contact and coil components) */
+.rung-contents {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* General styling for contact and coil components */
+.contact, .coil {
+  padding: 5px 10px;
+  background-color: #e3e3e3;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Hover effect for contact and coil components */
+.contact:hover, .coil:hover {
+  background-color: #c1c1c1;
+}
+
+/* Styling for active state (green for active contacts) */
+.contact.active, .coil.active {
+  background-color: #4caf50;  /* Green for active */
+  color: white;
+}
+
+/* Styling for inactive state (red for inactive contacts) */
+.contact.inactive, .coil.inactive {
+  background-color: #ff6347;  /* Red for inactive */
+  color: white;
+}
+
+/* Status message */
+.status-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+}
