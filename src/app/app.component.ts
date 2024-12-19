@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { ConnectionService } from './connection.service'; // Import the service
 import { Subscription } from 'rxjs';
 import { WorkspaceComponent } from './workspace/workspace.component';  // Import the WorkspaceComponent
-import { RouterOutlet } from '@angular/router'; // Import RouterOutlet for routing functionality
 import { RouterModule } from '@angular/router'; // Import RouterModule for routing functionality
+import { RouterOutlet } from '@angular/router'; // Import RouterOutlet for routing functionality
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,  // Ensuring the component is standalone
-  imports: [WorkspaceComponent, RouterOutlet, RouterModule] // Import WorkspaceComponent and RouterModule for routing
+  imports: [RouterModule, WorkspaceComponent, RouterOutlet] // Import RouterModule and WorkspaceComponent for routing
 })
 export class AppComponent {
   title = 'PLCPro';
