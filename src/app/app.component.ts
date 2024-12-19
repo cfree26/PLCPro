@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { ConnectionService } from './connection.service'; // Import the service
 import { Subscription } from 'rxjs';
 import { WorkspaceComponent } from './workspace/workspace.component';  // Import the WorkspaceComponent
+import { RouterOutlet } from '@angular/router'; // Import RouterOutlet for routing functionality
+import { RouterModule } from '@angular/router'; // Import RouterModule for routing functionality
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, WorkspaceComponent],  // Add WorkspaceComponent here for direct use
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  standalone: true,  // Ensuring the component is standalone
+  imports: [WorkspaceComponent, RouterOutlet, RouterModule] // Import WorkspaceComponent and RouterModule for routing
 })
 export class AppComponent {
   title = 'PLCPro';
@@ -31,7 +33,6 @@ export class AppComponent {
   runProject() {
     if (this.isConnected) {
       console.log('Running the project...');
-      // You could trigger any project-specific logic here
     } else {
       console.log('Please connect first!');
     }
@@ -39,6 +40,8 @@ export class AppComponent {
 
   // Clean up the subscription when the component is destroyed
   ngOnDestroy() {
-    this.connectionSubscription.unsubscribe();
+    if (this.connectionSubscription) {
+      this.connectionSubscription.unsubscribe();
+    }
   }
 }

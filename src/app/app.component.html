@@ -1,6 +1,6 @@
 <!-- Main Container -->
 <div class="studio-container">
-  <!-- Left Navigation Panel (Placeholder) -->
+  <!-- Left Navigation Panel -->
   <div class="left-panel">
     <div class="panel-item">Project</div>
     <div class="panel-item">Monitor</div>
@@ -19,18 +19,9 @@
       <button class="toolbar-button" (click)="runProject()">Run</button>
     </div>
 
-    <!-- Editor/Workspace -->
-    <div class="workspace">
-      <textarea
-        class="workspace-textarea"
-        [value]="
-          isConnected
-            ? 'You are connected. Start programming!'
-            : 'Please connect to the controller to begin.'
-        "
-        readonly
-      ></textarea>
-    </div>
+    <!-- Workspace (Main component) -->
+    <app-workspace [isConnected]="isConnected"></app-workspace>
+    <!-- This is where the workspace is rendered -->
 
     <!-- Status Bar -->
     <div class="status-bar">
@@ -40,7 +31,7 @@
   </div>
 </div>
 
-<!-- Placeholder for content and social links -->
+<!-- Optional Placeholder for content and social links (can be removed if not needed) -->
 <main class="main">
   <div class="content">
     <div class="left-side">
@@ -50,7 +41,6 @@
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
-        <!-- Replace with dynamic links if needed -->
         <a
           class="pill"
           href="https://angular.dev"
@@ -85,4 +75,4 @@
 </main>
 
 <!-- Angular Router Outlet -->
-<router-outlet />
+<router-outlet></router-outlet>
